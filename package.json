@@ -5,7 +5,7 @@
   "main": "Server.js",
   "scripts": {
     "serve": "nodemon server.js",
-    "lint": "eslint app.js"
+    "lint": "eslint ."
   },
   "author": "kodekage",
   "license": "MIT",
