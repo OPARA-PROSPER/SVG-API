@@ -11,11 +11,13 @@ app.use('/svg/students', (req, res, next) => {
 app.get('/students/:id', (req, res, next) => {
   let user = Number(req.params.id);
   
-  if( user === db[user - 1].id){
-    res.status(200).json(db[user - 1]);
+  if(db[user-1]){
+    if(user === db[user-1].id){
+      res.status(200).json(db[user - 1]);
+    }
   }else{
     res.status(404).json({
-      status: "there was an error",
+      status: "error",
       message: 'student with such id does not exits'
     })
   }
@@ -23,7 +25,8 @@ app.get('/students/:id', (req, res, next) => {
 
 app.use('/*', (req, res, next) => {
   res.status(400).json({
-    error: 'resource not found'
+    status: 'error', 
+    message: 'resource not found'
   });
 })
 
