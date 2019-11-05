@@ -1,39 +1,39 @@
-const express    = require('express');
+const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./db').default;
 
 const app = express();
+app.use(bodyParser.json());
 
-app.get('/students', (req, res, next) => {
+app.get('/students', (req, res) => {
   res.status(200).json({
     status: 'success',
-    students: db
+    students: db,
   });
-})
+});
 
-app.get('/students/:id', (req, res, next) => {
-  let user = Number(req.params.id);
-  
-  if(db[user-1]){
-    if(user === db[user-1].id){
+app.get('/students/:id', (req, res) => {
+  const user = Number(req.params.id);
+  if (db[user - 1]) {
+    if (user === db[user - 1].id) {
       res.status(200).json({
         status: 'success',
-        student: db[user - 1]
+        student: db[user - 1],
       });
     }
-  }else{
+  } else {
     res.status(404).json({
-      status: "error",
-      message: 'student with such id does not exits'
-    })
+      status: 'error',
+      message: 'student with such id does not exits',
+    });
   }
-})
+});
 
-app.use('/*', (req, res, next) => {
+app.use('/*', (req, res) => {
   res.status(400).json({
-    status: 'error', 
-    message: 'resource not found'
+    status: 'error',
+    message: 'resource not found',
   });
-})
+});
 
 module.exports = app;
