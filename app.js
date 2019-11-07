@@ -6,6 +6,7 @@ const Student = require('./models/students');
 mongoose.connect('mongodb://localhost/svg-api');
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get('/students', (req, res) => {
@@ -22,22 +23,58 @@ app.get('/students', (req, res) => {
   });
 });
 
-// app.get('/students/:id', (req, res) => {
-  // const user = Number(req.params.id);
-  // if (db[user - 1]) {
-    // if (user === db[user - 1].id) {
-      // res.status(200).json({
-        // status: 'success',
-        // student: db[user - 1],
-      // });
-    // }
-  // } else {
-    // res.status(404).json({
-      // status: 'error',
-      // message: 'student with such id does not exits',
-    // });
-  // }
-// });
+app.get('/student/:id', (req, res) => {
+  Student.findOne({
+    _id: req.params.id,
+  }).then((student) => {
+    res.status(200).json({
+      status: 'successful',
+      data: student,
+    });
+  }).catch((error) => {
+    res.status(400).json({
+      status: 'error',
+      message: error,
+    });
+  });
+});
+
+app.post('/students', (req, res) => {
+  const student = new Student(req.body);
+
+  student.save().then(() => {
+    res.status(200).json({
+      status: 'success',
+      message: 'new student added to the database',
+    }).catch((error) => {
+      res.status(400).json({
+        status: 'error',
+        message: error,
+      });
+    });
+  });
+});
+
+app.put('/student/:id', (req, res) => {
+  const updateStudent = new Student({
+    _id: req.params.id,
+    name: req.params.name,
+    reg_no: req.params.reg_no,
+    age: req.params.age,
+  });
+
+  Student.updateOne({ _id: req.params.id }, updateStudent).then(() => {
+    res.status(200).json({
+      status: 'success',
+      message: 'user details updated',
+    });
+  }).catch((error) => {
+    res.status(400).json({
+      status: 'error',
+      message: error,
+    });
+  });
+});
 
 app.use('/*', (req, res) => {
   res.status(400).json({
