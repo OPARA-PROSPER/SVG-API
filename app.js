@@ -58,12 +58,13 @@ app.post('/students', (req, res) => {
 app.put('/student/:id', (req, res) => {
   const updateStudent = new Student({
     _id: req.params.id,
-    name: req.params.name,
-    reg_no: req.params.reg_no,
-    age: req.params.age,
+    name: req.body.name,
+    reg_no: req.body.reg_no,
+    age: req.body.age,
   });
 
   Student.updateOne({ _id: req.params.id }, updateStudent).then(() => {
+    console.log(req.params);
     res.status(200).json({
       status: 'success',
       message: 'user details updated',
