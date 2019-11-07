@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-// const db = require('./db').default;
 const mongoose = require('mongoose');
 const Student = require('./models/students');
 
