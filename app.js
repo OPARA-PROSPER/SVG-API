@@ -64,10 +64,23 @@ app.put('/student/:id', (req, res) => {
   });
 
   Student.updateOne({ _id: req.params.id }, updateStudent).then(() => {
-    console.log(req.params);
     res.status(200).json({
       status: 'success',
       message: 'user details updated',
+    });
+  }).catch((error) => {
+    res.status(400).json({
+      status: 'error',
+      message: error,
+    });
+  });
+});
+
+app.delete('/student/:id', (req, res) => {
+  Student.deleteOne({ _id: req.params.id }).then(() => {
+    res.status(200).json({
+      status: 'success',
+      message: 'student successfully deleted',
     });
   }).catch((error) => {
     res.status(400).json({
