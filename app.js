@@ -6,10 +6,11 @@ const Student = require('./models/students');
 mongoose.connect('mongodb://localhost/svg-api');
 const app = express();
 
+app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
@@ -48,6 +49,8 @@ app.post('/students', (req, res) => {
   const student = new Student(req.body);
 
   student.save().then(() => {
+    // eslint-disable-next-line no-console
+    console.log(req.body);
     res.status(200).json({
       status: 'success',
       message: 'new student added to the database',
